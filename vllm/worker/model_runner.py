@@ -334,4 +334,5 @@ def _make_tensor_with_pad(
     dtype: torch.dtype,
 ) -> torch.Tensor:
     padded_x = [_pad_to_max(x_i, max_len, pad) for x_i in x]
+    # logger.info('padded_x:',padded_x)
     return torch.tensor(padded_x, dtype=dtype, device="cuda")

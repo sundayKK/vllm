@@ -20,7 +20,21 @@ def get_config(model: str,
                trust_remote_code: bool,
                revision: Optional[str] = None) -> PretrainedConfig:
     try:
-        config = AutoConfig.from_pretrained(
+        config = None
+        if "baichuan" in model:
+            config_class = _CONFIG_REGISTRY["baichuan"]
+            config = config_class.from_pretrained(model)
+            return config
+        elif "ChatGLM2" in model:
+            config_class = _CONFIG_REGISTRY["chatglm"]
+            config = config_class.from_pretrained(model)
+            return config
+        elif "Qwen" in model:
+            config_class = _CONFIG_REGISTRY["qwen"]
+            config = config_class.from_pretrained(model)
+            return config
+        else:
+            config = AutoConfig.from_pretrained(
             model, trust_remote_code=trust_remote_code, revision=revision)
     except ValueError as e:
         if (not trust_remote_code and

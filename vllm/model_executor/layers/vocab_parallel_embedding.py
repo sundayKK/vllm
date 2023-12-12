@@ -1,5 +1,5 @@
 from typing import Optional, Sequence
-
+from loguru import logger
 import torch
 import torch.nn.functional as F
 from torch.nn.parameter import Parameter
@@ -77,6 +77,8 @@ class VocabParallelEmbedding(torch.nn.Module):
 
     def weight_loader(self, param: Parameter, loaded_weight: torch.Tensor):
         parallel_dim = param.parallel_dim
+        # logger.info(f'parallel_dim:{parallel_dim}')
+        # logger.info(f'loaded_weight.shape[parallel_dim]:{loaded_weight.shape[parallel_dim]},self.num_embeddings:{self.num_embeddings}')
         assert loaded_weight.shape[parallel_dim] == self.num_embeddings
         loaded_weight = loaded_weight[self.vocab_start_index:self.
                                       vocab_end_index]

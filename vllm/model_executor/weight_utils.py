@@ -173,7 +173,7 @@ def prepare_hf_model_weights(
     if len(hf_weights_files) == 0:
         raise RuntimeError(
             f"Cannot find any model weights with `{model_name_or_path}`")
-
+    # logger.info(f'{len(hf_weights_files)},hf_folder:{hf_folder},hf_weights_files:{hf_weights_files},use_safetensors:{use_safetensors}')
     return hf_folder, hf_weights_files, use_safetensors
 
 
@@ -242,11 +242,13 @@ def hf_model_weights_iterator(
             with safe_open(st_file, framework="pt") as f:
                 for name in f.keys():  # noqa: SIM118
                     param = f.get_tensor(name)
+                    # logger.info(f'param_safe:{param.shape[0]}')
                     yield name, param
     else:
         for bin_file in hf_weights_files:
             state = torch.load(bin_file, map_location="cpu")
             for name, param in state.items():
+                # logger.info(f'param:{param.shape[0]}')
                 yield name, param
             del state
             torch.cuda.empty_cache()
@@ -270,6 +272,7 @@ def convert_pyslice_to_tensor(x: Any) -> torch.Tensor:
 def default_weight_loader(param: torch.Tensor,
                           loaded_weight: torch.Tensor) -> None:
     """Default weight loader."""
+    # logger.info(f'default_weight_loader:{param.size()}')
     assert param.size() == loaded_weight.size()
     param.data.copy_(loaded_weight)
 
