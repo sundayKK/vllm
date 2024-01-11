@@ -38,6 +38,7 @@ def get_tokenizer(
             f"using '{_FAST_LLAMA_TOKENIZER}' instead of the original "
             "tokenizer.")
     try:
+        logger.info(f"{tokenizer_name.lower()}")
         if "llama" in tokenizer_name.lower() or "congrong_chat" in tokenizer_name.lower() or "cwcr" in tokenizer_name.lower():
             logger.info("use own tokenizer")
             # tokenizer_path = "/workspace/engine-llm-inference/tokenizer/llama"
@@ -47,10 +48,10 @@ def get_tokenizer(
                 tokenizer.pad_token_id = 0
                 tokenizer.eos_token_id = 0
                 tokenizer.all_special_tokens = []
-            elif "ielts" in tokenizer_name.lower():
-                tokenizer_path = tokenizer_name
-                tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=False,add_eos_token=False)
-                tokenizer.pad_token_id = tokenizer.eos_token_id
+            # elif "ielts" in tokenizer_name.lower():
+            #     tokenizer_path = tokenizer_name
+            #     tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=False,add_eos_token=False)
+            #     tokenizer.pad_token_id = tokenizer.eos_token_id
             else:
                 tokenizer_path = tokenizer_name
                 tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=False)
