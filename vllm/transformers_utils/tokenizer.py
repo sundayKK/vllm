@@ -46,16 +46,16 @@ def get_tokenizer(
                 tokenizer = sentencepiece.SentencePieceProcessor()
                 tokenizer.load(tokenizer_name+"/tokenizer.model")
                 tokenizer.pad_token_id = 0
-                tokenizer.eos_token_id = 0
+                tokenizer.eos_token_id = 2
                 tokenizer.all_special_tokens = []
-            # elif "ielts" in tokenizer_name.lower():
-            #     tokenizer_path = tokenizer_name
-            #     tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=False,add_eos_token=False)
-            #     tokenizer.pad_token_id = tokenizer.eos_token_id
-            else:
-                tokenizer_path = tokenizer_name
-                tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=False)
-                tokenizer.pad_token_id = tokenizer.eos_token_id
+            # # elif "ielts" in tokenizer_name.lower():
+            # #     tokenizer_path = tokenizer_name
+            # #     tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=False,add_eos_token=False)
+            # #     tokenizer.pad_token_id = tokenizer.eos_token_id
+            # else:
+            tokenizer_path = tokenizer_name
+            tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path, legacy=False)
+            tokenizer.pad_token_id = tokenizer.eos_token_id
         elif "baichuan" in tokenizer_name.lower() :
             logger.info("use baichuanTokenizer tokenizer")
             tokenizer_path = tokenizer_name
