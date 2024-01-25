@@ -10,7 +10,7 @@ from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.engine.async_llm_engine import AsyncLLMEngine
 from vllm.sampling_params import SamplingParams
 from vllm.utils import random_uuid
-
+import torch
 TIMEOUT_KEEP_ALIVE = 5  # seconds.
 TIMEOUT_TO_PREVENT_DEADLOCK = 1  # seconds.
 app = FastAPI()
@@ -20,7 +20,8 @@ engine = None
 @app.get("/health")
 async def health() -> Response:
     """Health check."""
-    return Response(status_code=200)
+    return Response(status_code=200) if torch.cuda.is_available() else Response(status_code=500)
+    # return Response(status_code=200)
 
 @app.post("/cw_generate")
 async def generate(request: Request) -> Response:
